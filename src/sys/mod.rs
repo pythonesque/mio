@@ -12,3 +12,16 @@ pub use self::unix::{
 
 #[cfg(unix)]
 mod unix;
+
+#[cfg(windows)]
+pub use self::windows::{
+    Awakener,
+    Events,
+    Io,
+    Selector,
+    TcpSocket,
+    UdpSocket,
+};
+
+#[cfg(windows)]
+mod windows;
