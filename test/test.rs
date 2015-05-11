@@ -7,14 +7,23 @@ extern crate tempdir;
 
 pub use ports::localhost;
 
+#[cfg(unix)]
 mod test_battery;
+#[cfg(unix)]
 mod test_close_on_drop;
+#[cfg(unix)]
 mod test_echo_server;
+#[cfg(unix)]
 mod test_multicast;
+#[cfg(unix)]
 mod test_notify;
+#[cfg(unix)]
 mod test_register_deregister;
+#[cfg(unix)]
 mod test_timer;
+#[cfg(unix)]
 mod test_udp_socket;
+#[cfg(unix)]
 mod test_unix_echo_server;
 
 mod ports {
