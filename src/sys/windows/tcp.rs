@@ -1,6 +1,8 @@
-use {io, Evented, Interest, PollOpt, Selector, Token, TryRead, TryWrite};
+use {io, Evented, EventSet, PollOpt, Selector, Token};
+use net::tcp::Shutdown;
 use sys::windows::{api, Rt, Socket};
-use std::net::SocketAddr;
+use std::io::{Read, Write};
+use std::net::{SocketAddr};
 use std::ptr;
 
 #[derive(Debug)]
@@ -40,13 +42,11 @@ impl TcpSocket {
     }
 
     pub fn connect(&self, addr: &SocketAddr) -> io::Result<bool> {
+        // TODO: don't initialize here
         let global = try!(Rt::global());
 
-        try!(self.socket.associate(global));
+        try!(self.socket.associate(&global));
         try!(self.socket.connect(addr));
-
-        // poll for fun
-        try!(global.poll());
 
         Ok(true)
     }
@@ -75,6 +75,10 @@ impl TcpSocket {
         unimplemented!();
     }
 
+    pub fn shutdown(&self, how: Shutdown) -> io::Result<()> {
+        unimplemented!();
+    }
+
     /*
      *
      * ===== Socket Options =====
@@ -84,26 +88,42 @@ impl TcpSocket {
     pub fn set_reuseaddr(&self, val: bool) -> io::Result<()> {
         unimplemented!();
     }
-}
 
-impl TryRead for TcpSocket {
-    fn read_slice(&mut self, buf: &mut [u8]) -> io::Result<Option<usize>> {
+    pub fn take_socket_error(&self) -> io::Result<()> {
+        unimplemented!();
+    }
+
+    pub fn set_nodelay(&self, nodelay: bool) -> io::Result<()> {
+        unimplemented!();
+    }
+
+    pub fn set_keepalive(&self, seconds: Option<u32>) -> io::Result<()> {
         unimplemented!();
     }
 }
 
-impl TryWrite for TcpSocket {
-    fn write_slice(&mut self, buf: &[u8]) -> io::Result<Option<usize>> {
+impl Read for TcpSocket {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        unimplemented!();
+    }
+}
+
+impl Write for TcpSocket {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        unimplemented!();
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
         unimplemented!();
     }
 }
 
 impl Evented for TcpSocket {
-    fn register(&self, selector: &mut Selector, token: Token, interest: Interest, opts: PollOpt) -> io::Result<()> {
+    fn register(&self, selector: &mut Selector, token: Token, interest: EventSet, opts: PollOpt) -> io::Result<()> {
         unimplemented!();
     }
 
-    fn reregister(&self, selector: &mut Selector, token: Token, interest: Interest, opts: PollOpt) -> io::Result<()> {
+    fn reregister(&self, selector: &mut Selector, token: Token, interest: EventSet, opts: PollOpt) -> io::Result<()> {
         unimplemented!();
     }
 

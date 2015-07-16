@@ -1,4 +1,4 @@
-use {io, Evented, Interest, IpAddr, PollOpt, Selector, Token};
+use {io, Evented, EventSet, IpAddr, PollOpt, Selector, Token};
 use buf::{Buf, MutBuf};
 use std::net::SocketAddr;
 
@@ -57,11 +57,11 @@ impl UdpSocket {
 }
 
 impl Evented for UdpSocket {
-    fn register(&self, selector: &mut Selector, token: Token, interest: Interest, opts: PollOpt) -> io::Result<()> {
+    fn register(&self, selector: &mut Selector, token: Token, interest: EventSet, opts: PollOpt) -> io::Result<()> {
         unimplemented!();
     }
 
-    fn reregister(&self, selector: &mut Selector, token: Token, interest: Interest, opts: PollOpt) -> io::Result<()> {
+    fn reregister(&self, selector: &mut Selector, token: Token, interest: EventSet, opts: PollOpt) -> io::Result<()> {
         unimplemented!();
     }
 

@@ -89,9 +89,6 @@ extern crate nix;
 #[cfg(windows)]
 extern crate winapi;
 
-#[cfg(windows)]
-extern crate libc;
-
 #[macro_use]
 extern crate log;
 

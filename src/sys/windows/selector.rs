@@ -35,7 +35,7 @@ pub struct Events;
 
 impl Events {
     pub fn new() -> Events {
-        unimplemented!();
+        Events
     }
 
     pub fn len(&self) -> usize {

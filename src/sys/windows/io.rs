@@ -1,4 +1,5 @@
-use {io, Evented, Interest, PollOpt, Selector, Token, TryRead, TryWrite};
+use {io, Evented, EventSet, PollOpt, Selector, Token};
+use std::io::{Read, Write};
 
 #[derive(Debug)]
 pub struct Io;
@@ -7,11 +8,11 @@ impl Io {
 }
 
 impl Evented for Io {
-    fn register(&self, selector: &mut Selector, token: Token, interest: Interest, opts: PollOpt) -> io::Result<()> {
+    fn register(&self, selector: &mut Selector, token: Token, interest: EventSet, opts: PollOpt) -> io::Result<()> {
         unimplemented!();
     }
 
-    fn reregister(&self, selector: &mut Selector, token: Token, interest: Interest, opts: PollOpt) -> io::Result<()> {
+    fn reregister(&self, selector: &mut Selector, token: Token, interest: EventSet, opts: PollOpt) -> io::Result<()> {
         unimplemented!();
     }
 
@@ -20,14 +21,18 @@ impl Evented for Io {
     }
 }
 
-impl TryRead for Io {
-    fn read_slice(&mut self, dst: &mut [u8]) -> io::Result<Option<usize>> {
+impl Read for Io {
+    fn read(&mut self, dst: &mut [u8]) -> io::Result<usize> {
         unimplemented!();
     }
 }
 
-impl TryWrite for Io {
-    fn write_slice(&mut self, src: &[u8]) -> io::Result<Option<usize>> {
+impl Write for Io {
+    fn write(&mut self, src: &[u8]) -> io::Result<usize> {
+        unimplemented!();
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
         unimplemented!();
     }
 }
