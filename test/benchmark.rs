@@ -17,7 +17,7 @@ mod nix {
     pub use nix::sys::epoll::*;
 }
 
-fn timed(label: &str, f: ||) {
+fn timed<F: Fn()>(label: &str, f: F) {
     let start = time::precise_time_s();
     f();
     let end = time::precise_time_s();
@@ -25,12 +25,12 @@ fn timed(label: &str, f: ||) {
 }
 
 fn init(saddr: &str) -> (nix::Fd, nix::Fd) {
-    let optval = 1i;
+    let optval = 1isize;
     let addr = SockAddr::parse(saddr.as_slice()).expect("could not parse InetAddr");
     let srvfd = nix::socket(nix::AF_INET, nix::SOCK_STREAM, nix::SOCK_CLOEXEC).unwrap();
     nix::setsockopt(srvfd, nix::SOL_SOCKET, nix::SO_REUSEADDR, &optval).unwrap();
     nix::bind(srvfd, &from_sockaddr(&addr)).unwrap();
-    nix::listen(srvfd, 256u).unwrap();
+    nix::listen(srvfd, 256usize).unwrap();
 
     let fd = nix::socket(nix::AF_INET, nix::SOCK_STREAM, nix::SOCK_CLOEXEC | nix::SOCK_NONBLOCK).unwrap();
     let res = nix::connect(fd, &from_sockaddr(&addr));
@@ -48,7 +48,7 @@ fn read_bench() {
     let mut buf = Vec::with_capacity(1600);
     unsafe { buf.set_len(1600); }
     timed("read", || {
-        let mut i = 0u;
+        let mut i = 0usize;
         while i < 10000000 {
             let res = nix::read(clifd, buf.as_mut_slice());
             assert_eq!(res.unwrap_err().kind, nix::EWOULDBLOCK);
@@ -68,7 +68,7 @@ fn epollctl_bench() {
     nix::epoll_ctl(epfd, nix::EpollCtlAdd, clifd, &info);
 
     timed("epoll_ctl", || {
-        let mut i = 0u;
+        let mut i = 0usize;
         while i < 10000000 {
             nix::epoll_ctl(epfd, nix::EpollCtlMod, clifd, &info);
             i = i + 1;

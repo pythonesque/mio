@@ -61,6 +61,10 @@ impl TcpSocket {
         self.sys.set_reuseaddr(val)
     }
 
+    pub fn set_reuseport(&self, val: bool) -> io::Result<()> {
+        self.sys.set_reuseport(val)
+    }
+
     pub fn take_socket_error(&self) -> io::Result<()> {
         self.sys.take_socket_error()
     }
